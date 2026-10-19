@@ -28,7 +28,18 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
       - name: Unit + API tests
-        run: npm --prefix server test
+        shell: bash
+        run: |
+          set -o pipefail
+          if npm --prefix server test 2>&1 | tee server-test.log; then
+            exit 0
+          fi
+          # Job logs are not always retrievable from the API; promote the failure
+          # to annotations so the reason is visible on the pull request.
+          grep -aE "^(not ok|# fail|# tests)|^[[:space:]]*(error|code|stack|expected|actual):" server-test.log | head -n 40 | while IFS= read -r line; do
+            echo "::error::$line"
+          done
+          exit 1
       - name: CLI smoke
         shell: bash
         run: |
