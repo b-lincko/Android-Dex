@@ -6,8 +6,9 @@
 import { readFileSync, writeFileSync, mkdirSync, readdirSync, statSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const root = path.resolve(new URL('..', import.meta.url).pathname);
+const root = path.resolve(fileURLToPath(new URL('..', import.meta.url)));
 const pkg = JSON.parse(readFileSync(path.join(root, 'server/package.json'), 'utf8'));
 const version = pkg.version;
 const now = new Date().toISOString();

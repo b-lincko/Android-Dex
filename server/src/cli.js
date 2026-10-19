@@ -324,7 +324,7 @@ async function openConsole() {
   let health = await fetch(`${baseUrl}/api/health`).then((response) => response.json()).catch(() => null);
   if (!health) {
     console.log(dim(`Bridge not reachable at ${baseUrl}; starting it on port ${port}…`));
-    const cli = new URL(import.meta.url).pathname;
+    const cli = fileURLToPath(import.meta.url);
     const child = spawn(process.execPath, [cli, 'serve', '--host', '127.0.0.1', '--port', String(port)], {
       detached: true, stdio: 'ignore', env: process.env,
     });

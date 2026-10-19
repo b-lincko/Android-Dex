@@ -3,9 +3,9 @@
   "dataLicense": "CC0-1.0",
   "SPDXID": "SPDXRef-DOCUMENT",
   "name": "android-dex-2.0.0",
-  "documentNamespace": "https://android-dex.dev/spdx/2.0.0/190c2a96085b8e39",
+  "documentNamespace": "https://android-dex.dev/spdx/2.0.0/122ef114571dff9b",
   "creationInfo": {
-    "created": "2026-10-19T13:37:45.633Z",
+    "created": "2026-10-19T13:58:38.706Z",
     "creators": [
       "Tool: android-dex-generate-sbom-1.0",
       "Organization: Android DEX contributors"
@@ -25,7 +25,7 @@
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "ec4405302cc692a59385886eb579f726092df2bd4eb41996aa9f01a936b5ba2c"
+          "checksumValue": "69c7e9ac58951dcf9e4a207ad1d8a8cc7a1314e23c2a63dacfd721e4f9a42a80"
         }
       ],
       "externalRefs": [

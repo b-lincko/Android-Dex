@@ -6,8 +6,9 @@
  */
 import { writeFileSync, readFileSync } from 'node:fs';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const root = path.resolve(new URL('..', import.meta.url).pathname);
+const root = path.resolve(fileURLToPath(new URL('..', import.meta.url)));
 const args = process.argv.slice(2);
 const arg = (name, fallback) => { const i = args.indexOf(`--${name}`); return i === -1 ? fallback : args[i + 1]; };
 const base = (arg('url', process.env.DEX_URL || 'http://127.0.0.1:8787')).replace(/\/$/, '');

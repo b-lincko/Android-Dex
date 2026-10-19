@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import { after, before, test } from 'node:test';
+import { fileURLToPath } from 'node:url';
 import { startBridge, TOKEN } from './helpers.js';
 
 let ctx;
@@ -236,7 +237,7 @@ test('openapi documents routes', async () => {
 });
 
 test('static app serving works when configured', async () => {
-  const other = await startBridge({ appDir: new URL('../../app', import.meta.url).pathname });
+  const other = await startBridge({ appDir: fileURLToPath(new URL('../../app', import.meta.url)) });
   try {
     const index = await fetch(`${other.bridge.url}/`);
     assert.equal(index.status, 200);

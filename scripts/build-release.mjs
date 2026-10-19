@@ -11,8 +11,9 @@ import { readFileSync, writeFileSync, mkdirSync, cpSync, rmSync, utimesSync, rea
 import { createHash } from 'node:crypto';
 import { spawnSync } from 'node:child_process';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const root = path.resolve(new URL('..', import.meta.url).pathname);
+const root = path.resolve(fileURLToPath(new URL('..', import.meta.url)));
 const version = JSON.parse(readFileSync(path.join(root, 'server/package.json'), 'utf8')).version;
 const args = process.argv.slice(2);
 const outArg = args.indexOf('--out');

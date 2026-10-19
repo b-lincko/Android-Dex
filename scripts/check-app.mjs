@@ -7,8 +7,9 @@
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { spawnSync } from 'node:child_process';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const root = path.resolve(new URL('..', import.meta.url).pathname);
+const root = path.resolve(fileURLToPath(new URL('..', import.meta.url)));
 const appDir = path.join(root, 'app');
 const failures = [];
 const notes = [];
