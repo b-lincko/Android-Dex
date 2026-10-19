@@ -10,8 +10,8 @@
   "scripts": {
     "start": "node server/src/index.js serve",
     "test": "npm --prefix server test",
-    "test:all": "npm --prefix server test && node --test sdk/test/*.test.js",
-    "test:sdk": "node --test sdk/test/*.test.js",
+    "test:all": "npm --prefix server test && node --test sdk/test/client.test.js",
+    "test:sdk": "node --test sdk/test/client.test.js",
     "lint:app": "node scripts/check-app.mjs",
     "bench": "node bench/bench.js",
     "doctor": "node server/src/cli.js doctor",

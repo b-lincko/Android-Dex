@@ -81,7 +81,7 @@ jobs:
             sleep 0.5
           done
       - name: SDK tests
-        run: node --test sdk/test/*.test.js
+        run: node --test sdk/test/client.test.js
   webdav:
     name: webdav · mount smoke test
     runs-on: ubuntu-latest

@@ -159,7 +159,7 @@ proxy and allow it explicitly.
 `sdk/test/client.test.js` runs against a live bridge:
 
 ```bash
-DEX_TEST_URL=http://127.0.0.1:8790 DEX_TEST_TOKEN=smoke node --test sdk/test/*.test.js
+DEX_TEST_URL=http://127.0.0.1:8790 DEX_TEST_TOKEN=smoke node --test sdk/test/client.test.js
 ```
 
 CI starts a bridge for this suite; locally use `npm start` in another terminal.

@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { after, before, test } from 'node:test';
 import { startBridge, TOKEN } from './helpers.js';
+import { createSocket } from './ws-client.js';
 
 let ctx;
 before(async () => { ctx = await startBridge(); });
@@ -101,7 +102,7 @@ test('reconnect supervisor uses backoff and restores windows', async () => {
 });
 
 test('WebSocket: hello snapshot, commands, errors and live events', async () => {
-  const socket = new WebSocket(`${ctx.bridge.url.replace('http', 'ws')}/ws?token=${TOKEN}`);
+  const socket = createSocket(`${ctx.bridge.url.replace('http', 'ws')}/ws?token=${TOKEN}`);
   const messages = [];
   const waiters = [];
   socket.addEventListener('message', (event) => {
@@ -151,7 +152,7 @@ test('WebSocket: hello snapshot, commands, errors and live events', async () => 
 });
 
 test('WebSocket rejects bad tokens', async () => {
-  const socket = new WebSocket(`${ctx.bridge.url.replace('http', 'ws')}/ws?token=wrong`);
+  const socket = createSocket(`${ctx.bridge.url.replace('http', 'ws')}/ws?token=wrong`);
   const outcome = await new Promise((resolve) => {
     socket.addEventListener('open', () => resolve('open'));
     socket.addEventListener('error', () => resolve('error'));

@@ -69,7 +69,7 @@ ES modules and CSS. Do not add a bundler.
 
 ```bash
 npm --prefix server test          # API/features/security (25)
-node --test sdk/test/*.test.js    # SDK against a live bridge
+node --test sdk/test/client.test.js # SDK against a live bridge
 npm run lint:app                  # import graph, syntax, icons, service worker
 npm run bench                     # latency table against a running bridge
 npm run reproducible              # build twice, compare hashes

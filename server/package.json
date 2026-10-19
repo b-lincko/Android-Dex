@@ -9,7 +9,7 @@
   "main": "./src/index.js",
   "scripts": {
     "start": "node src/index.js serve",
-    "test": "node --test test/*.test.js",
+    "test": "node test/run.mjs",
     "bench": "node bench/bench.js",
     "sbom": "node ../scripts/generate-sbom.mjs"
   },

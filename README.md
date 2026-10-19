@@ -190,7 +190,7 @@ CLI and SDK speak the same public API. See
 ```bash
 npm --prefix server test           # 25 tests, no install step
 npm run lint:app                   # imports, syntax, icons, service worker
-node --test sdk/test/*.test.js     # SDK against a live bridge on :8790
+node --test sdk/test/client.test.js # SDK against a live bridge on :8790
 npm run bench                      # latency table
 npm run reproducible               # build twice, compare hashes
 npm run build                      # dist/android-dex-2.0.0.tar.gz + SHA256SUMS

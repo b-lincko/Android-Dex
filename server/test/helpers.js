@@ -49,7 +49,9 @@ export async function startBridge(options = {}) {
     raw,
     async stop() {
       await bridge.stop();
-      await rm(dir, { recursive: true, force: true });
+      // Windows keeps handles open briefly after a server closes; retry instead of
+      // failing the suite with EPERM/EBUSY.
+      await rm(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 100 });
     },
   };
 }
