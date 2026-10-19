@@ -1,0 +1,156 @@
+{
+  "spdxVersion": "SPDX-2.3",
+  "dataLicense": "CC0-1.0",
+  "SPDXID": "SPDXRef-DOCUMENT",
+  "name": "android-dex-2.0.0",
+  "documentNamespace": "https://android-dex.dev/spdx/2.0.0/9735fd82a98a36d4",
+  "creationInfo": {
+    "created": "2026-10-19T10:41:32.448Z",
+    "creators": [
+      "Tool: android-dex-generate-sbom-1.0",
+      "Organization: Android DEX contributors"
+    ],
+    "comment": "Generated from the release worktree. Optional external tools are declared but not distributed."
+  },
+  "packages": [
+    {
+      "SPDXID": "SPDXRef-Package-AndroidDEX",
+      "name": "android-dex",
+      "versionInfo": "2.0.0",
+      "downloadLocation": "https://github.com/Shrey113/Android-Dex",
+      "filesAnalyzed": false,
+      "licenseConcluded": "LicenseRef-Proprietary",
+      "licenseDeclared": "LicenseRef-Proprietary",
+      "copyrightText": "Copyright (c) 2026 Shrey Patel. All rights reserved.",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "ec4405302cc692a59385886eb579f726092df2bd4eb41996aa9f01a936b5ba2c"
+        }
+      ],
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:github/Shrey113/Android-Dex@v2.0.0"
+        }
+      ],
+      "comment": "54 first-party files hashed for the package verification code."
+    },
+    {
+      "SPDXID": "SPDXRef-Package-Node",
+      "name": "node",
+      "versionInfo": "22.22.3",
+      "downloadLocation": "https://nodejs.org/",
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "copyrightText": "Copyright Node.js contributors",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:generic/node@22.22.3"
+        }
+      ],
+      "comment": "Runtime requirement (>=20.11); bundled by the Flatpak and Snap builds."
+    },
+    {
+      "SPDXID": "SPDXRef-Package-qrcode-generator",
+      "name": "qrcode-generator",
+      "versionInfo": "1.4.4",
+      "downloadLocation": "https://github.com/kazuhikoarase/qrcode-generator",
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "copyrightText": "Copyright (c) Kazuhiko Arase",
+      "comment": "Vendored at app/vendor/qrcode.js for offline QR pairing."
+    },
+    {
+      "SPDXID": "SPDXRef-Package-Lucide",
+      "name": "lucide-static",
+      "versionInfo": "0.454.0",
+      "downloadLocation": "https://github.com/lucide-icons/lucide",
+      "filesAnalyzed": false,
+      "licenseConcluded": "ISC",
+      "licenseDeclared": "ISC",
+      "copyrightText": "Copyright (c) Lucide contributors",
+      "comment": "Icon paths inlined into app/assets/icons.svg; licence in app/vendor/lucide.LICENSE."
+    },
+    {
+      "SPDXID": "SPDXRef-Package-scrcpy",
+      "name": "scrcpy",
+      "versionInfo": "3.x (external)",
+      "downloadLocation": "https://github.com/Genymobile/scrcpy",
+      "filesAnalyzed": false,
+      "licenseConcluded": "Apache-2.0",
+      "licenseDeclared": "Apache-2.0",
+      "copyrightText": "Copyright (c) Genymobile",
+      "comment": "Optional external dependency, not bundled. Used for the mirroring transport when installed."
+    },
+    {
+      "SPDXID": "SPDXRef-Package-adb",
+      "name": "android-platform-tools (adb)",
+      "versionInfo": "external",
+      "downloadLocation": "https://developer.android.com/tools/releases/platform-tools",
+      "filesAnalyzed": false,
+      "licenseConcluded": "Apache-2.0",
+      "licenseDeclared": "Apache-2.0",
+      "copyrightText": "Copyright The Android Open Source Project",
+      "comment": "Optional external dependency, not bundled. Provides device transport and USB debugging."
+    },
+    {
+      "SPDXID": "SPDXRef-Package-ffmpeg",
+      "name": "ffmpeg",
+      "versionInfo": "external",
+      "downloadLocation": "https://ffmpeg.org/",
+      "filesAnalyzed": false,
+      "licenseConcluded": "LGPL-2.1-or-later",
+      "licenseDeclared": "LGPL-2.1-or-later",
+      "copyrightText": "Copyright FFmpeg contributors",
+      "comment": "Optional external dependency for recording/transcoding, not bundled."
+    }
+  ],
+  "relationships": [
+    {
+      "spdxElementId": "SPDXRef-Package-AndroidDEX",
+      "relationshipType": "DEPENDS_ON",
+      "relatedSpdxElement": "SPDXRef-Package-Node"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-AndroidDEX",
+      "relationshipType": "DEPENDS_ON",
+      "relatedSpdxElement": "SPDXRef-Package-qrcode-generator"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-AndroidDEX",
+      "relationshipType": "DEPENDS_ON",
+      "relatedSpdxElement": "SPDXRef-Package-Lucide"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-AndroidDEX",
+      "relationshipType": "OPTIONAL_DEPENDENCY_OF",
+      "relatedSpdxElement": "SPDXRef-Package-scrcpy"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-AndroidDEX",
+      "relationshipType": "OPTIONAL_DEPENDENCY_OF",
+      "relatedSpdxElement": "SPDXRef-Package-adb"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-AndroidDEX",
+      "relationshipType": "OPTIONAL_DEPENDENCY_OF",
+      "relatedSpdxElement": "SPDXRef-Package-ffmpeg"
+    }
+  ],
+  "hasExtractedLicensingInfos": [
+    {
+      "licenseId": "LicenseRef-Proprietary",
+      "extractedText": "Android DEX is proprietary software. See the LICENSE file in the distribution for permitted use. Third-party components remain under their own licences.",
+      "name": "Android DEX Proprietary License",
+      "seeAlsos": [
+        "https://github.com/Shrey113/Android-Dex/blob/main/LICENSE"
+      ]
+    }
+  ]
+}

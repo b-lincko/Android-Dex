@@ -1,0 +1,117 @@
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Existing tag to (re)build
+        required: false
+
+permissions:
+  contents: write
+
+jobs:
+  source:
+    name: source tarball · SBOM · signatures
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - id: version
+        run: echo "version=$(node -p "require('./server/package.json').version")" >> "$GITHUB_OUTPUT"
+      - name: Tests
+        run: npm --prefix server test
+      - name: Console checks
+        run: npm run lint:app
+      - name: SBOM
+        run: npm run sbom
+      - name: Reproducible build
+        run: |
+          SOURCE_DATE_EPOCH="$(git log -1 --format=%ct)" npm run build
+          sha256sum -c dist/SHA256SUMS --ignore-missing
+      - name: Import signing key
+        if: ${{ secrets.RELEASE_GPG_KEY != '' && secrets.GPG_PRIVATE_KEY != '' }}
+        env:
+          GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
+          RELEASE_GPG_KEY: ${{ secrets.RELEASE_GPG_KEY }}
+        run: |
+          echo "$GPG_PRIVATE_KEY" | gpg --batch --import
+          bash scripts/sign-release.sh dist
+      - name: Sign (sigstore fallback when no GPG key)
+        if: ${{ secrets.RELEASE_GPG_KEY == '' }}
+        uses: sigstore/gh-action-sigstore-python@v3.0.0
+        with:
+          inputs: dist/android-dex-*.tar.gz
+      - name: Debian package
+        run: sudo apt-get update && sudo apt-get install -y dpkg-dev && bash packaging/linux/build-deb.sh
+      - name: Publish GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG="${GITHUB_REF_NAME}"
+          gh release create "$TAG" \
+            --title "Android DEX ${{ steps.version.outputs.version }}" \
+            --notes-file CHANGELOG.md \
+            dist/android-dex-*.tar.gz dist/*.deb dist/SHA256SUMS \
+            $( [ -f dist/SHA256SUMS.asc ] && echo dist/SHA256SUMS.asc ) \
+            $( [ -f dist/android-dex-*.tar.gz.sigstore ] && echo dist/*.sigstore ) \
+            sbom/android-dex-*.spdx.json \
+            --verify-tag || gh release upload "$TAG" dist/* sbom/*.spdx.json --clobber
+
+  macos:
+    name: macOS app (unsigned build)
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Build app + DMG
+        run: |
+          node scripts/generate-sbom.mjs
+          bash packaging/macos/build-dmg.sh
+      - name: Notarise (only with credentials)
+        if: ${{ secrets.NOTARY_PROFILE != '' && secrets.MACOS_CERT_P12 != '' }}
+        env:
+          NOTARY_PROFILE: ${{ secrets.NOTARY_PROFILE }}
+          MACOS_CERT_P12: ${{ secrets.MACOS_CERT_P12 }}
+          MACOS_CERT_PASSWORD: ${{ secrets.MACOS_CERT_PASSWORD }}
+        run: |
+          echo "$MACOS_CERT_P12" | base64 --decode > /tmp/cert.p12
+          security create-keychain -p actions build.keychain
+          security import /tmp/cert.p12 -k build.keychain -P "$MACOS_CERT_PASSWORD" -T /usr/bin/codesign
+          security list-keychains -s build.keychain
+          security unlock-keychain -p actions build.keychain
+          bash packaging/macos/build-dmg.sh
+          bash packaging/macos/notarize.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: android-dex-macos
+          path: dist/macos/*.dmg
+          retention-days: 14
+
+  windows:
+    name: Windows installer
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install Inno Setup
+        run: choco install innosetup --no-progress -y
+      - name: Build installer
+        run: '& "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" packaging\windows\android-dex.iss'
+      - uses: actions/upload-artifact@v4
+        with:
+          name: android-dex-windows
+          path: dist/windows/*.exe
+          retention-days: 14

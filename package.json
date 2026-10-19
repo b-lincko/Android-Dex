@@ -1,0 +1,37 @@
+{
+  "name": "android-dex",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Android DEX \u2014 mirror Android apps on your desktop with clipboard, files, calls, notifications, media IO and game profiles.",
+  "type": "module",
+  "engines": {
+    "node": ">=20.11"
+  },
+  "scripts": {
+    "start": "node server/src/index.js serve",
+    "test": "npm --prefix server test",
+    "test:all": "npm --prefix server test && node --test sdk/test/*.test.js",
+    "test:sdk": "node --test sdk/test/*.test.js",
+    "lint:app": "node scripts/check-app.mjs",
+    "bench": "node bench/bench.js",
+    "doctor": "node server/src/cli.js doctor",
+    "sbom": "node scripts/generate-sbom.mjs",
+    "build": "node scripts/build-release.mjs",
+    "reproducible": "bash scripts/check-reproducible.sh",
+    "package:deb": "bash packaging/linux/build-deb.sh"
+  },
+  "keywords": [
+    "android",
+    "dex",
+    "scrcpy",
+    "adb",
+    "remote-desktop",
+    "clipboard",
+    "webdav"
+  ],
+  "license": "SEE LICENSE IN LICENSE",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Shrey113/Android-Dex"
+  }
+}

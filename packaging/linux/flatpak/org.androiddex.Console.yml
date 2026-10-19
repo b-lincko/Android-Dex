@@ -1,0 +1,34 @@
+app-id: org.androiddex.Console
+runtime: org.freedesktop.Platform
+runtime-version: '24.08'
+sdk: org.freedesktop.Sdk
+sdk-extensions:
+  - org.freedesktop.Sdk.Extension.node20
+command: android-dex-launch.sh
+finish-args:
+  - --share=network
+  - --share=ipc
+  - --socket=x11
+  - --socket=wayland
+  - --socket=pulseaudio
+  - --device=all            # USB access for adb
+  - --filesystem=home
+  - --filesystem=/run/udev:ro
+  - --talk-name=org.freedesktop.Notifications
+  - --talk-name=org.freedesktop.portal.Desktop
+  - --env=DEX_SHARE_DIR=~/Android-DEX-share
+modules:
+  - name: android-dex
+    buildsystem: simple
+    build-commands:
+      - install -d /app/android-dex
+      - cp -r server app sdk scripts bench doc README.md LICENSE NOTICE CHANGELOG.md /app/android-dex/
+      - rm -rf /app/android-dex/server/test
+      - install -Dm755 packaging/flatpak/android-dex-launch.sh /app/bin/android-dex-launch.sh
+      - install -Dm644 packaging/icon.png /app/share/icons/hicolor/1024x1024/apps/org.androiddex.Console.png
+      - install -Dm644 packaging/linux/android-dex.desktop /app/share/applications/org.androiddex.Console.desktop
+      - printf '#!/bin/sh\nexec /usr/lib/sdk/node20/bin/node /app/android-dex/server/src/cli.js "$@"\n' > /app/bin/android-dex
+      - chmod 755 /app/bin/android-dex
+    sources:
+      - type: dir
+        path: ../..

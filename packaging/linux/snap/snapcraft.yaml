@@ -1,0 +1,91 @@
+name: android-dex
+base: core24
+version: '2.0.0'
+summary: Android apps on your desktop with clipboard, files, calls and messages
+description: |
+  Android DEX mirrors Android applications into resizable desktop windows and
+  adds a real productivity layer: two-way clipboard with history, drag-and-drop
+  file transfer, a WebDAV mount, SMS/MMS/RCS and call control, notification
+  mirroring with inline replies, multi-monitor window routing, media IO, and
+  fair-play aware game profiles.
+
+  The bridge is a zero-runtime-dependency Node service. This snap bundles Node
+  20 so the target machine does not need a Node installation.
+grade: stable
+confinement: classic
+architectures: [amd64, arm64]
+license: MIT
+website: https://github.com/Shrey113/Android-Dex
+
+apps:
+  android-dex:
+    command: bin/android-dex
+    environment:
+      DEX_SHARE_DIR: $SNAP_USER_COMMON/share
+      DEX_DATA_DIR: $SNAP_USER_COMMON/data
+      PATH: $SNAP/usr/lib/node20/bin:$PATH
+  bridge:
+    command: bin/android-dex serve --host 0.0.0.0 --port 8787
+    daemon: simple
+    restart-condition: on-failure
+    plugs: [network, network-bind, home]
+
+parts:
+  node:
+    plugin: nil
+    build-packages: [curl, ca-certificates, xz-utils]
+    override-build: |
+      set -eu
+      ARCH="$(dpkg --print-architecture)"
+      case "$ARCH" in
+        amd64) NODE_ARCH=x64 ;;
+        arm64) NODE_ARCH=arm64 ;;
+        *) echo "unsupported architecture $ARCH" >&2; exit 1 ;;
+      esac
+      VERSION=20.18.0
+      TARBALL="node-v${VERSION}-linux-${NODE_ARCH}.tar.xz"
+      curl -fsSL "https://nodejs.org/dist/v${VERSION}/${TARBALL}" -o "/tmp/${TARBALL}"
+      curl -fsSL "https://nodejs.org/dist/v${VERSION}/SHASUMS256.txt" -o /tmp/SHASUMS256.txt
+      (cd /tmp && grep " ${TARBALL}\$" SHASUMS256.txt | sha256sum -c -)
+      install -d "$CRAFT_PART_INSTALL/usr/lib/node20"
+      tar -xJf "/tmp/${TARBALL}" -C /tmp
+      cp -a "/tmp/node-v${VERSION}-linux-${NODE_ARCH}/." "$CRAFT_PART_INSTALL/usr/lib/node20/"
+      install -d "$CRAFT_PART_INSTALL/bin"
+      ln -sf ../usr/lib/node20/bin/node "$CRAFT_PART_INSTALL/bin/node"
+      rm -rf "$CRAFT_PART_INSTALL/usr/lib/node20/include" "$CRAFT_PART_INSTALL/usr/lib/node20/share/doc"
+
+  dex:
+    plugin: dump
+    source: ../../..
+    stage:
+      - server
+      - app
+      - sdk
+      - scripts
+      - bench
+      - doc
+      - packaging
+      - README.md
+      - LICENSE
+      - NOTICE
+      - CHANGELOG.md
+    organize:
+      server: opt/android-dex/server
+      app: opt/android-dex/app
+      sdk: opt/android-dex/sdk
+      scripts: opt/android-dex/scripts
+      bench: opt/android-dex/bench
+      doc: opt/android-dex/doc
+      README.md: opt/android-dex/README.md
+      LICENSE: opt/android-dex/LICENSE
+      NOTICE: opt/android-dex/NOTICE
+      CHANGELOG.md: opt/android-dex/CHANGELOG.md
+    override-build: |
+      set -eu
+      craftctl default
+      rm -rf "$CRAFT_PART_INSTALL/opt/android-dex/server/test"
+      install -d "$CRAFT_PART_INSTALL/bin"
+      printf '%s\n' '#!/bin/sh' \
+        'exec "$SNAP/usr/lib/node20/bin/node" "$SNAP/opt/android-dex/server/src/cli.js" "$@"' \
+        > "$CRAFT_PART_INSTALL/bin/android-dex"
+      chmod 755 "$CRAFT_PART_INSTALL/bin/android-dex"
