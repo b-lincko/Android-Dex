@@ -3,9 +3,9 @@
   "dataLicense": "CC0-1.0",
   "SPDXID": "SPDXRef-DOCUMENT",
   "name": "android-dex-2.0.0",
-  "documentNamespace": "https://android-dex.dev/spdx/2.0.0/9735fd82a98a36d4",
+  "documentNamespace": "https://android-dex.dev/spdx/2.0.0/190c2a96085b8e39",
   "creationInfo": {
-    "created": "2026-10-19T10:41:32.448Z",
+    "created": "2026-10-19T13:37:45.633Z",
     "creators": [
       "Tool: android-dex-generate-sbom-1.0",
       "Organization: Android DEX contributors"
