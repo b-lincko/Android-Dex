@@ -1,0 +1,10 @@
+{
+  "id": "speaker-notes",
+  "name": "Speaker Notes",
+  "version": "1.0.0",
+  "author": "Android DEX SDK",
+  "description": "Pins the newest clipboard text as a speaker-notes overlay whenever a slide deck window is focused.",
+  "permissions": ["events:read", "clipboard:read", "windows:read", "notifications:action"],
+  "hooks": ["clipboard.changed", "window.focused"],
+  "entry": "index.js"
+}

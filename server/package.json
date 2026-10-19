@@ -1,0 +1,28 @@
+{
+  "name": "android-dex-bridge",
+  "version": "2.0.0",
+  "description": "Headless bridge for Android DEX: REST/WebSocket control plane, WebDAV storage mount, clipboard/file/telephony/notification sync and a scripting CLI. Zero runtime dependencies.",
+  "type": "module",
+  "bin": {
+    "android-dex": "./src/cli.js"
+  },
+  "main": "./src/index.js",
+  "scripts": {
+    "start": "node src/index.js serve",
+    "test": "node --test test/*.test.js",
+    "bench": "node bench/bench.js",
+    "sbom": "node ../scripts/generate-sbom.mjs"
+  },
+  "engines": {
+    "node": ">=20.11"
+  },
+  "keywords": [
+    "android",
+    "scrcpy",
+    "adb",
+    "remote-control",
+    "webdav",
+    "accessibility"
+  ],
+  "license": "SEE LICENSE IN ../LICENSE"
+}
