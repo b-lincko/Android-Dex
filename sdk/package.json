@@ -1,0 +1,30 @@
+{
+  "name": "@android-dex/sdk",
+  "version": "2.0.0",
+  "description": "Dependency-free JavaScript client for the Android DEX bridge REST + WebSocket API.",
+  "type": "module",
+  "main": "./dex-client.js",
+  "exports": {
+    ".": "./dex-client.js"
+  },
+  "files": [
+    "dex-client.js",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "android",
+    "dex",
+    "scrcpy",
+    "adb",
+    "remote-control",
+    "sdk"
+  ],
+  "license": "SEE LICENSE IN ../LICENSE",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Shrey113/Android-Dex"
+  }
+}
