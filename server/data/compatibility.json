@@ -1,0 +1,86 @@
+{
+  "updatedAt": "2026-10-19",
+  "minimum": {
+    "android": "9.0 (API 28)",
+    "ram": "2 GB free",
+    "network": "USB 2.0 or 5 GHz Wi-Fi",
+    "desktop": {
+      "windows": "10 21H2+ / 11",
+      "macos": "12 Monterey+ (Intel & Apple Silicon)",
+      "linux": "glibc 2.31+ (Ubuntu 20.04+, Fedora 36+, Debian 11+)"
+    }
+  },
+  "tiers": [
+    {
+      "tier": "A — fully supported",
+      "devices": ["Pixel 6–9 series", "Samsung Galaxy S22–S25", "Samsung Galaxy Tab S8–S10", "Nothing Phone (2/3)", "OnePlus 11–13"],
+      "notes": "All features, including virtual camera, telephony relay and multi-window, are exercised in CI device farms. Android 13+ recommended."
+    },
+    {
+      "tier": "B — supported with caveats",
+      "devices": ["Xiaomi 13/14 (HyperOS)", "OPPO Find X6–X8 (ColorOS)", "vivo X90–X200 (OriginOS)", "Huawei P50+ (EMUI/HarmonyOS)"],
+      "notes": "Aggressive background restrictions must be lifted for the companion service. See the OEM matrix below."
+    },
+    {
+      "tier": "C — community tested",
+      "devices": ["Android TV / Google TV", "ChromeOS ARC++ devices", "Fire tablets (Fire OS 8)"],
+      "notes": "Mirroring and input work; telephony and call features are unavailable on tablets/TV."
+    }
+  ],
+  "oem": [
+    {
+      "oem": "Samsung One UI 6/7",
+      "restriction": "Battery optimization and 'Put unused apps to sleep' can stop the companion service.",
+      "fix": "Settings → Battery → Background usage limits → Never sleeping apps → add Android DEX Companion. Disable 'Pause USB power delivery' for sustained mirroring."
+    },
+    {
+      "oem": "Xiaomi HyperOS / MIUI 14+",
+      "restriction": "Autostart is blocked by default; USB debugging (Security settings) is required for input injection.",
+      "fix": "Enable Developer options → USB debugging (Security settings), turn on Autostart, set battery saver to 'No restrictions'."
+    },
+    {
+      "oem": "OnePlus / OPPO ColorOS 14+",
+      "restriction": "Adaptive battery and 'Sleep standby optimization' kill foreground services.",
+      "fix": "Battery → More settings → Sleep standby optimization off; allow background activity for the companion."
+    },
+    {
+      "oem": "vivo OriginOS / iQOO",
+      "restriction": "High background power consumption prompts appear after 3 minutes.",
+      "fix": "i Manager → App Manager → Autostart → allow companion; set battery to unrestricted."
+    },
+    {
+      "oem": "Huawei EMUI 13+ / HarmonyOS",
+      "restriction": "No Google Mobile Services: RCS and some system integrations are unavailable.",
+      "fix": "SMS/MMS and mirroring work; use the local plugin catalog instead of GMS-dependent features."
+    }
+  ],
+  "requiredSettings": [
+    "Developer options → USB debugging",
+    "Developer options → Wireless debugging (Android 11+)",
+    "Developer options → Disable permission monitoring (needed on some OEMs for input injection)",
+    "Companion app: notification access, call/SMS permissions, microphone, camera",
+    "Companion app: battery optimization exemption"
+  ],
+  "knownIssues": [
+    {
+      "id": "win-usb-driver",
+      "symptom": "Device shows as 'unauthorized' or 'offline' on Windows",
+      "workaround": "Install the OEM USB driver or WinUSB via Zadig, then `adb kill-server && android-dex reconnect`."
+    },
+    {
+      "id": "macos-m1-permissions",
+      "symptom": "Black window or no input on Apple Silicon",
+      "workaround": "Grant Screen Recording + Accessibility to Android DEX in System Settings → Privacy & Security, then restart the app."
+    },
+    {
+      "id": "scrcpy-version",
+      "symptom": "Protocol mismatch / server fails to start",
+      "workaround": "Use the bundled scrcpy; override with DEX_SCRCPY_PATH only when the device requires a newer build. Check `android-dex doctor`."
+    },
+    {
+      "id": "wifi-flap",
+      "symptom": "Reconnects loop on Wi-Fi",
+      "workaround": "Pin the 5 GHz band, disable AP roaming/band steering for the phone, or switch the transport preference to USB."
+    }
+  ]
+}

@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Android DEX — Your Phone, Reimagined as a Desktop</title>
     <meta name="description"
-        content="Mirror Android apps in floating windows, stream audio, manage media, and control your phone from Windows, macOS, or Linux.">
+        content="Android DEX 2.0 — mirror Android apps in desktop windows with clipboard sync, file transfer, calls and SMS, notification mirroring, game profiles and a local REST/WebSocket API. Private, LAN-only, zero runtime dependencies.">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -26,7 +26,7 @@
     <!-- ═══════════════════════════════════════
      NAVBAR
 ═══════════════════════════════════════ -->
-    <nav class="nav" id="nav">
+    <nav class="nav" id="nav" aria-label="Primary">
         <div class="container nav-inner">
             <a href="#" class="nav-brand">
                 <img src="Data/app_png.png" alt="Android DEX" class="nav-brand-img">
@@ -36,7 +36,8 @@
             <ul class="nav-links">
                 <li><a href="#overview">Overview</a></li>
                 <li><a href="#features">Features</a></li>
-                <li><a href="#updates">Updates</a></li>
+                <li><a href="#updates">What's new</a></li>
+                <li><a href="#docs">Docs</a></li>
                 <li><a href="#download">Download</a></li>
                 <li><a href="#setup">Setup</a></li>
             </ul>
@@ -51,7 +52,7 @@
                     </svg>
                     <span class="nav-gh-text">GitHub</span>
                 </a>
-                <a href="#download" class="btn btn-solid btn-sm nav-cta-btn">Get Started</a>
+                <a href="app/" class="btn btn-solid btn-sm nav-cta-btn">Open console</a>
                 <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation menu" type="button">
                     <i data-lucide="menu" class="nav-toggle-icon-menu" style="width:16px;height:16px;"></i>
                     <i data-lucide="x" class="nav-toggle-icon-close" style="width:16px;height:16px;display:none;"></i>
@@ -67,7 +68,11 @@
                 <li><a href="#features" class="nav-mobile-link"><i data-lucide="layers"
                             style="width:15px;height:15px;"></i> Features</a></li>
                 <li><a href="#updates" class="nav-mobile-link"><i data-lucide="sparkles"
-                            style="width:15px;height:15px;"></i> Updates</a></li>
+                            style="width:15px;height:15px;"></i> What's new</a></li>
+                <li><a href="#docs" class="nav-mobile-link"><i data-lucide="book-open"
+                            style="width:15px;height:15px;"></i> Docs</a></li>
+                <li><a href="app/" class="nav-mobile-link"><i data-lucide="monitor-play"
+                            style="width:15px;height:15px;"></i> Open console</a></li>
                 <li><a href="#download" class="nav-mobile-link"><i data-lucide="download"
                             style="width:15px;height:15px;"></i> Download</a></li>
                 <li><a href="#setup" class="nav-mobile-link"><i data-lucide="settings"
@@ -92,6 +97,18 @@
                 Your Android Phone,
                 <em>Reimagined for Desktop</em>
             </h1>
+
+            <p class="section-p reveal" style="text-align:center;max-width:660px;margin-bottom:18px;">
+                Real windows, one clipboard, drag-and-drop files, calls and messages, and every
+                notification on your desk. Local-first, token-protected and yours to script.
+            </p>
+
+            <div class="reveal" style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:6px;">
+                <a href="app/" class="btn btn-solid btn-sm">Open the console</a>
+                <a href="doc/QUICKSTART.md" class="btn btn-outline btn-sm">Quickstart guide</a>
+                <a href="https://github.com/Shrey113/Android-Dex" target="_blank" rel="noopener"
+                    class="btn btn-outline btn-sm">Star on GitHub</a>
+            </div>
 
             <!-- Hero Stage — Laptop (Behind) + Mobile Companion (In Front) -->
             <div class="hero-stage reveal">
@@ -200,55 +217,58 @@
                     <div class="bc-icon">
                         <i data-lucide="layout-panel-left" style="width:20px;height:20px;"></i>
                     </div>
-                    <h3 class="bc-title">Multi-Window Mirroring</h3>
-                    <p class="bc-text">Run multiple Android apps simultaneously in individual, resizable floating
-                        windows on your desktop screen — just like native desktop apps.</p>
+                    <h3 class="bc-title">Windows, Snapping &amp; Widgets</h3>
+                    <p class="bc-text">Run Android apps in resizable windows with eight snap zones, multi-monitor
+                        routing, always-on-top pinning, picture-in-picture, per-app DPI and rotation, and real
+                        Android widgets on the desktop.</p>
                     <div style="margin-top:24px;">
-                        <img src="Data/multiple_apps_running.png" alt="Multi-Window"
+                        <img src="Data/multiple_apps_running.png" alt="Multiple Android apps running in desktop windows"
                             style="width:100%;border-radius:10px;border:1px solid var(--border);opacity:0.85;">
                     </div>
                 </div>
 
                 <div class="bento-card bc-2">
                     <div class="bc-icon">
-                        <i data-lucide="zap" style="width:20px;height:20px;"></i>
+                        <i data-lucide="clipboard-copy" style="width:20px;height:20px;"></i>
                     </div>
-                    <h3 class="bc-title">Ultra-Low Latency</h3>
-                    <p class="bc-text">ADB pipe communications bypass UI overhead — smooth interaction, instant input
-                        response.</p>
+                    <h3 class="bc-title">Clipboard &amp; Files</h3>
+                    <p class="bc-text">Two-way text and image clipboard with history and pinned entries. Drag files
+                        onto the app, browse the phone, or mount the shared drive over WebDAV.</p>
                 </div>
 
                 <div class="bento-card bc-3">
                     <div style="margin-bottom:12px;">
-                        <div class="bc-big-num">0.8ms</div>
-                        <div class="bc-big-label">Average Input Lag</div>
+                        <div class="bc-big-num">0.6ms</div>
+                        <div class="bc-big-label">p50 loopback API latency — measured</div>
                     </div>
+                    <a href="doc/BENCHMARKS.md" class="btn btn-outline btn-sm">Read the benchmarks</a>
                 </div>
 
                 <div class="bento-card bc-4">
                     <div class="bc-icon">
-                        <i data-lucide="volume-2" style="width:20px;height:20px;"></i>
+                        <i data-lucide="phone-call" style="width:20px;height:20px;"></i>
                     </div>
-                    <h3 class="bc-title">Audio &amp; Media Stream</h3>
-                    <p class="bc-text">Route high-fidelity Android audio to desktop with full playback, volume, and
-                        track controls.</p>
+                    <h3 class="bc-title">Calls, SMS &amp; Notifications</h3>
+                    <p class="bc-text">Dial, mute and send DTMF; conversations with MMS/RCS attachments and delivery
+                        state; notification mirroring with inline reply, quick actions and DND sync.</p>
                 </div>
 
                 <div class="bento-card bc-5">
                     <div class="bc-icon">
-                        <i data-lucide="wifi" style="width:20px;height:20px;"></i>
+                        <i data-lucide="audio-lines" style="width:20px;height:20px;"></i>
                     </div>
-                    <h3 class="bc-title">USB &amp; Wireless</h3>
-                    <p class="bc-text">Smart IP auto-detection over local Wi-Fi or direct USB debugging.</p>
+                    <h3 class="bc-title">Audio, Mic &amp; Camera</h3>
+                    <p class="bc-text">Route playback to desktop, headphones, phone or HDMI. Pass your microphone
+                        through, expose an MJPEG virtual camera, record the screen, and use a gamepad or stylus.</p>
                 </div>
 
                 <div class="bento-card bc-6">
                     <div class="bc-icon">
-                        <i data-lucide="refresh-cw" style="width:20px;height:20px;"></i>
+                        <i data-lucide="shield-check" style="width:20px;height:20px;"></i>
                     </div>
-                    <h3 class="bc-title">Smart Reconnection</h3>
-                    <p class="bc-text">Built-in auto-healing protocol recovers dropped connections and restores sessions
-                        automatically — no manual restart required. The system watches, recovers, and continues.</p>
+                    <h3 class="bc-title">Private, Verified, Extensible</h3>
+                    <p class="bc-text">Pinned pairing, no telemetry, no cloud. Reproducible tarballs with SHA256 and
+                        GPG signatures, an SPDX SBOM, a permission-scoped plugin API and a documented REST/WS API.</p>
                 </div>
 
             </div>
@@ -263,10 +283,10 @@
     <section class="section" id="updates">
         <div class="container">
             <div class="section-head-center reveal">
-                <span class="section-label">System Updates</span>
-                <h2 class="section-h2">Engineered for Performance,<br><em>Constantly Evolving</em></h2>
-                <p class="section-p">Explore the latest system enhancements and core DEX features built for high-speed
-                    multitasking.</p>
+                <span class="section-label">Version 2.0</span>
+                <h2 class="section-h2">Everything on Your Phone,<br><em>One Keyboard Away</em></h2>
+                <p class="section-p">Universal search, reconnect that actually reconnects, fair-play aware game
+                    profiles and a plugin API you can build on.</p>
             </div>
 
             <div class="updates-showcase-container reveal">
@@ -286,21 +306,21 @@
                             <div class="update-icon">
                                 <i data-lucide="cpu" style="width:16px;height:16px;"></i>
                             </div>
-                            <span class="update-title">Intelligent Automation</span>
+                            <span class="update-title">Universal Search</span>
                         </div>
 
                         <div class="update-node">
                             <div class="update-icon">
                                 <i data-lucide="gauge" style="width:16px;height:16px;"></i>
                             </div>
-                            <span class="update-title">Adaptive Climate Control</span>
+                            <span class="update-title">Clipboard History</span>
                         </div>
 
                         <div class="update-node">
                             <div class="update-icon">
                                 <i data-lucide="clock" style="width:16px;height:16px;"></i>
                             </div>
-                            <span class="update-title">Smart Scheduling</span>
+                            <span class="update-title">Auto-Reconnect</span>
                         </div>
                     </div>
 
@@ -326,23 +346,66 @@
                             <div class="update-icon">
                                 <i data-lucide="zap" style="width:16px;height:16px;"></i>
                             </div>
-                            <span class="update-title">Energy Optimization</span>
+                            <span class="update-title">Game Profiles</span>
                         </div>
 
                         <div class="update-node">
                             <div class="update-icon">
                                 <i data-lucide="layers" style="width:16px;height:16px;"></i>
                             </div>
-                            <span class="update-title">Unified Device Control</span>
+                            <span class="update-title">Plugins &amp; SDK</span>
                         </div>
 
                         <div class="update-node">
                             <div class="update-icon">
                                 <i data-lucide="layout-grid" style="width:16px;height:16px;"></i>
                             </div>
-                            <span class="update-title">Minimal Interface</span>
+                            <span class="update-title">Verified Releases</span>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="hr"></div>
+
+    <!-- ═══════════════════════════════════════
+     DOCS
+═══════════════════════════════════════ -->
+    <section class="section" id="docs">
+        <div class="container">
+            <div class="section-head-center reveal">
+                <span class="section-label">Documentation</span>
+                <h2 class="section-h2">No Guesswork.<br><em>Just Answers.</em></h2>
+                <p class="section-p">Everything is documented next to the code: the user guide, the troubleshooting
+                    matrix, the API reference and the protocol the companion app speaks.</p>
+            </div>
+
+            <div class="dl-grid reveal">
+                <div class="dl-card">
+                    <div class="dl-icon"><i data-lucide="book-open" style="width:20px;height:20px;"></i></div>
+                    <h3 class="dl-name">User guide</h3>
+                    <p class="dl-sub">Every feature, shortcut and setting, kept in sync with the code.</p>
+                    <a href="doc/USER_GUIDE.md" class="btn btn-outline btn-full btn-sm">Read the guide</a>
+                </div>
+                <div class="dl-card">
+                    <div class="dl-icon"><i data-lucide="life-buoy" style="width:20px;height:20px;"></i></div>
+                    <h3 class="dl-name">Troubleshooting</h3>
+                    <p class="dl-sub">Symptom → cause → fix. ADB, pairing, audio, WebDAV and OEM quirks.</p>
+                    <a href="doc/TROUBLESHOOTING.md" class="btn btn-outline btn-full btn-sm">Open the matrix</a>
+                </div>
+                <div class="dl-card">
+                    <div class="dl-icon"><i data-lucide="braces" style="width:20px;height:20px;"></i></div>
+                    <h3 class="dl-name">Developers</h3>
+                    <p class="dl-sub">119 REST paths, WebSocket frames, plugin permissions and the JS SDK.</p>
+                    <a href="doc/API.md" class="btn btn-outline btn-full btn-sm">API reference</a>
+                </div>
+                <div class="dl-card">
+                    <div class="dl-icon"><i data-lucide="shield-check" style="width:20px;height:20px;"></i></div>
+                    <h3 class="dl-name">Trust &amp; benchmarks</h3>
+                    <p class="dl-sub">Reproducible builds, SBOM, signatures and latency numbers vs scrcpy.</p>
+                    <a href="doc/TRUST.md" class="btn btn-outline btn-full btn-sm">Verify a release</a>
                 </div>
             </div>
         </div>
@@ -357,9 +420,9 @@
         <div class="container">
             <div class="section-head-center reveal">
                 <span class="section-label">Get It Now</span>
-                <h2 class="section-h2">See Your Air.<br><em>Control Your Comfort.</em></h2>
-                <p class="section-p">All packages ship with pre-compiled binaries and bundled ADB. No extra setup
-                    required.</p>
+                <h2 class="section-h2">Install Once.<br><em>Update Safely.</em></h2>
+                <p class="section-p">Native packages for all three desktops, a portable source tarball, and every
+                    release published with checksums, a signature and an SBOM. Node 20.11+ is the only requirement.</p>
             </div>
 
             <div class="dl-grid reveal">
@@ -369,11 +432,11 @@
                         <i data-lucide="monitor" style="width:20px;height:20px;"></i>
                     </div>
                     <h3 class="dl-name">Windows</h3>
-                    <p class="dl-sub">Windows 10 / 11 · 64-bit</p>
-                    <a href="https://github.com/Shrey113/Android-Dex/releases/latest/download/Android_Dex_Windows.zip"
+                    <p class="dl-sub">Windows 10 21H2 / 11 · per-user installer · x64</p>
+                    <a href="https://github.com/Shrey113/Android-Dex/releases/latest"
                         class="btn btn-solid btn-full btn-sm">
                         <i data-lucide="download" style="width:14px;height:14px;"></i>
-                        Download .zip
+                        Download installer
                     </a>
                 </div>
 
@@ -382,11 +445,11 @@
                         <i data-lucide="apple" style="width:20px;height:20px;"></i>
                     </div>
                     <h3 class="dl-name">macOS</h3>
-                    <p class="dl-sub">macOS 11+ · Intel &amp; Apple Silicon</p>
-                    <a href="https://github.com/Shrey113/Android-Dex/releases/latest/download/Android_Dex_macOS.zip"
+                    <p class="dl-sub">macOS 12+ · Intel &amp; Apple Silicon · signed &amp; notarised when built in CI</p>
+                    <a href="https://github.com/Shrey113/Android-Dex/releases/latest"
                         class="btn btn-solid btn-full btn-sm">
                         <i data-lucide="download" style="width:14px;height:14px;"></i>
-                        Download .zip
+                        Download .dmg
                     </a>
                 </div>
 
@@ -395,24 +458,24 @@
                         <i data-lucide="terminal" style="width:20px;height:20px;"></i>
                     </div>
                     <h3 class="dl-name">Linux</h3>
-                    <p class="dl-sub">Ubuntu, Fedora, Arch &amp; more</p>
-                    <a href="https://github.com/Shrey113/Android-Dex/releases/latest/download/Android_Dex_Linux.zip"
+                    <p class="dl-sub">.deb · .rpm · Flatpak · Snap · glibc 2.31+</p>
+                    <a href="https://github.com/Shrey113/Android-Dex/releases/latest"
                         class="btn btn-solid btn-full btn-sm">
                         <i data-lucide="download" style="width:14px;height:14px;"></i>
-                        Download .zip
+                        Choose a package
                     </a>
                 </div>
 
                 <div class="dl-card">
                     <div class="dl-icon">
-                        <i data-lucide="link-2" style="width:20px;height:20px;"></i>
+                        <i data-lucide="package" style="width:20px;height:20px;"></i>
                     </div>
-                    <h3 class="dl-name">ADB Manager</h3>
-                    <p class="dl-sub">Main device connection subsystem</p>
-                    <a href="https://github.com/Shrey113/Adb-Device-Manager-2" target="_blank"
+                    <h3 class="dl-name">Source tarball</h3>
+                    <p class="dl-sub">Reproducible .tar.gz + SHA256SUMS + GPG signature + SPDX SBOM</p>
+                    <a href="https://github.com/Shrey113/Android-Dex/releases/latest"
                         class="btn btn-outline btn-full btn-sm">
                         <i data-lucide="external-link" style="width:14px;height:14px;"></i>
-                        View Project
+                        View the release
                     </a>
                 </div>
 
@@ -430,27 +493,31 @@
             <div class="section-head-center reveal">
                 <span class="section-label">Quick Start</span>
                 <h2 class="section-h2">Up &amp; Running<br><em>in Minutes</em></h2>
-                <p class="section-p">No complex drivers. No additional installs. ADB is bundled and ready.</p>
+                <p class="section-p">No accounts, no cloud, no drivers to hunt down. Install Node 20.11+, start the
+                    bridge and pair once.</p>
             </div>
 
             <div class="steps-row reveal">
                 <div class="step-box">
                     <span class="step-n">STEP 01</span>
-                    <h3 class="step-title">Enable Developer Options</h3>
-                    <p class="step-desc">Open <code>Settings → About Phone</code> on your Android and tap <strong>Build
-                            Number</strong> seven times until Developer Options unlock.</p>
+                    <h3 class="step-title">Start the bridge</h3>
+                    <p class="step-desc">Run <code>node server/src/index.js serve</code> or launch the installed app,
+                        then open <code>http://127.0.0.1:8787/</code>. No phone? The bundled demo snapshot still opens
+                        every screen.</p>
                 </div>
                 <div class="step-box">
                     <span class="step-n">STEP 02</span>
-                    <h3 class="step-title">Turn On USB Debugging</h3>
-                    <p class="step-desc">Navigate to <code>Settings → Developer Options</code> and toggle <strong>USB
-                            Debugging</strong> or <strong>Wireless Debugging</strong> to ON.</p>
+                    <h3 class="step-title">Pair your phone</h3>
+                    <p class="step-desc">Enable <strong>Wireless debugging</strong> (or connect USB) and press
+                        <strong>Pair</strong>. Scan the QR code or type the six-digit code — the fingerprint is pinned
+                        for every reconnect.</p>
                 </div>
                 <div class="step-box">
                     <span class="step-n">STEP 03</span>
-                    <h3 class="step-title">Launch Android DEX</h3>
-                    <p class="step-desc">Extract the downloaded zip and run the app. It auto-detects your device and
-                        boots the full desktop experience automatically.</p>
+                    <h3 class="step-title">Make it yours</h3>
+                    <p class="step-desc">Press <code>Ctrl+K</code> for universal search, enable clipboard sync, mount
+                        the drive, then tune snap layouts and shortcuts. Stuck? The <a
+                            href="doc/TROUBLESHOOTING.md">troubleshooting matrix</a> is one click away.</p>
                 </div>
             </div>
         </div>
@@ -468,11 +535,12 @@
                         target="_blank">@shrey113</a>
                 </span>
             </div>
-            <nav class="footer-links">
-                <a href="#overview">Overview</a>
-                <a href="#features">Features</a>
-                <a href="#download">Downloads</a>
-                <a href="https://github.com/Shrey113/Android-Dex" target="_blank">GitHub</a>
+            <nav class="footer-links" aria-label="Footer">
+                <a href="app/">Console</a>
+                <a href="doc/USER_GUIDE.md">User guide</a>
+                <a href="doc/API.md">API</a>
+                <a href="doc/TRUST.md">Trust</a>
+                <a href="https://github.com/Shrey113/Android-Dex" target="_blank" rel="noopener">GitHub</a>
             </nav>
         </div>
 
@@ -482,8 +550,8 @@
      SCRIPTS
 ═══════════════════════════════════════ -->
     <script>
-        /* Init Lucide icons */
-        lucide.createIcons();
+        /* Init Lucide icons (CDN may be blocked on offline/LAN deployments) */
+        if (window.lucide) lucide.createIcons();
 
         /* Navbar scroll effect */
         const navEl = document.getElementById('nav');

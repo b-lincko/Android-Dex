@@ -1,0 +1,23 @@
+[Unit]
+Description=Android DEX bridge
+Documentation=https://github.com/Shrey113/Android-Dex#readme
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/android-dex serve --host 0.0.0.0 --port 8787
+Environment=DEX_LOG_LEVEL=info
+EnvironmentFile=-%h/.config/android-dex/bridge.env
+Restart=on-failure
+RestartSec=3
+# Hardening: the bridge needs to reach adb and the share directory only.
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=%h/.local/share/android-dex %h/Android-DEX-share
+# If you use a custom share directory, add it to ReadWritePaths above.
+
+[Install]
+WantedBy=default.target

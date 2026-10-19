@@ -1,0 +1,30 @@
+# Runtime state — never commit device data, tokens or crash bundles
+.dex-data/
+*.log
+
+# Dependencies & build output
+node_modules/
+server/node_modules/
+dist/
+packaging/linux/flatpak/build/
+packaging/linux/snap/parts/
+packaging/linux/snap/stage/
+packaging/linux/snap/*.snap
+packaging/macos/*.dmg
+*.deb
+*.rpm
+
+# Android companion build output (Gradle)
+companion/build/
+companion/.gradle/
+companion/local.properties
+*.apk
+*.aab
+
+# Local tooling
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+coverage/
+*.tmp

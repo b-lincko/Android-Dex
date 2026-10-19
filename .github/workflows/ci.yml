@@ -1,0 +1,112 @@
+name: CI
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  bridge:
+    name: bridge · node ${{ matrix.node }} · ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        node: ['20', '22']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+      - name: Unit + API tests
+        shell: bash
+        run: |
+          set -o pipefail
+          if npm --prefix server test 2>&1 | tee server-test.log; then
+            exit 0
+          fi
+          # Job logs are not always retrievable from the API; promote the failure
+          # to annotations so the reason is visible on the pull request.
+          grep -aE "^(not ok|# fail|# tests)|^[[:space:]]*(error|code|stack|expected|actual):" server-test.log | head -n 40 | while IFS= read -r line; do
+            echo "::error::$line"
+          done
+          exit 1
+      - name: CLI smoke
+        shell: bash
+        run: |
+          node server/src/cli.js doctor || true
+          node server/src/cli.js version
+
+  console:
+    name: console · lint, build, reproducibility
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Console import/syntax/icon checks
+        run: npm run lint:app
+      - name: SBOM
+        run: npm run sbom
+      - name: Reproducible release tarball
+        run: npm run reproducible
+      - name: Build release artifacts
+        run: npm run build
+      - name: Verify checksums
+        run: bash scripts/verify-release.sh dist/android-dex-*.tar.gz
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-dex-release
+          path: |
+            dist/*.tar.gz
+            dist/SHA256SUMS
+            sbom/*.spdx.json
+          retention-days: 14
+
+  sdk:
+    name: sdk · live bridge integration
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Start bridge
+        run: |
+          DEX_DATA_DIR="$RUNNER_TEMP/dex-data" \
+          DEX_SHARE_DIR="$RUNNER_TEMP/dex-share" \
+          node server/src/index.js serve --host 127.0.0.1 --port 8790 --token smoke --data-dir "$RUNNER_TEMP/dex-data" --share-dir "$RUNNER_TEMP/dex-share" &
+          for i in $(seq 1 30); do
+            curl -fsS http://127.0.0.1:8790/api/health && break
+            sleep 0.5
+          done
+      - name: SDK tests
+        run: node --test sdk/test/client.test.js
+  webdav:
+    name: webdav · mount smoke test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: WebDAV PUT/GET/PROPFIND
+        run: |
+          DEX_DATA_DIR="$RUNNER_TEMP/dav-data" DEX_SHARE_DIR="$RUNNER_TEMP/dav-share" DEX_TOKEN=t \
+            node server/src/index.js serve --port 8791 --host 127.0.0.1 --token t \
+            --data-dir "$RUNNER_TEMP/dav-data" --share-dir "$RUNNER_TEMP/dav-share" &
+          for i in $(seq 1 30); do curl -fsS http://127.0.0.1:8791/api/health >/dev/null && break; sleep 0.5; done
+          printf 'dav-smoke' | curl -fsS -u dex:t -T - http://127.0.0.1:8791/dav/smoke.txt
+          curl -fsS -u dex:t http://127.0.0.1:8791/dav/smoke.txt | grep -q dav-smoke
+          curl -fsS -u dex:t -X PROPFIND -H 'Depth: 1' http://127.0.0.1:8791/dav/ | grep -q smoke.txt

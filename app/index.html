@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" data-contrast="normal">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Android DEX — Console</title>
+  <meta name="description" content="Android DEX web console: mirror Android apps, sync clipboard and files, answer calls and messages, and manage game profiles from any browser or a headless bridge.">
+  <meta name="theme-color" content="#08090b">
+  <meta name="color-scheme" content="dark light">
+
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="assets/app-icon.png" type="image/png">
+  <link rel="apple-touch-icon" href="assets/app-icon.png">
+  <link rel="stylesheet" href="css/app.css">
+
+  <script src="vendor/qrcode.js" defer></script>
+  <script type="module" src="js/boot.js"></script>
+</head>
+<body>
+
+  <a class="skip-link" href="#view">Skip to main content</a>
+
+  <!-- Icon sprite (offline, from lucide-static) -->
+  <div id="icon-sprite" aria-hidden="true"></div>
+
+  <!-- Boot splash -->
+  <div id="boot-splash" class="boot-splash" role="status" aria-live="polite">
+    <div class="boot-inner">
+      <div class="boot-logo">
+        <img src="assets/app-icon.png" alt="" width="64" height="64">
+        <span class="boot-ring"></span>
+      </div>
+      <h1 class="boot-title">Android <em>DEX</em></h1>
+      <p class="boot-tag" data-i18n="boot.tagline">Your phone, reimagined as a desktop.</p>
+      <div class="boot-track"><div class="boot-bar" id="boot-bar"></div></div>
+      <p class="boot-status" id="boot-status" data-i18n="boot.starting">Starting console…</p>
+      <div class="boot-chips">
+        <span><i data-icon="clipboard"></i><span data-i18n="boot.clipboard">Clipboard</span></span>
+        <span><i data-icon="phone"></i><span data-i18n="boot.calls">Calls &amp; SMS</span></span>
+        <span><i data-icon="camera"></i><span data-i18n="boot.camera">Virtual camera</span></span>
+        <span><i data-icon="monitor-smartphone"></i><span data-i18n="boot.mount">Drive mount</span></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Shell -->
+  <div class="app" id="app" hidden>
+
+    <header class="topbar" role="banner">
+      <button class="brand" id="brand-home" aria-label="Android DEX home" title="Desktop (Alt+1)">
+        <span class="brand-mark"><img src="assets/app-icon.png" alt="" width="26" height="26"></span>
+        <span class="brand-text">Android <b>DEX</b></span>
+        <span class="brand-tag" data-i18n="app.console">Console</span>
+      </button>
+
+      <button class="omni" id="omni-open" aria-label="Universal search" title="Universal search (Ctrl+K)">
+        <i data-icon="search"></i>
+        <span class="omni-label" data-i18n="search.placeholder">Search apps, contacts, files, messages…</span>
+        <kbd>Ctrl K</kbd>
+      </button>
+
+      <div class="topbar-status">
+        <button class="conn-pill" id="conn-pill" title="Connection details">
+          <span class="conn-dot" id="conn-dot"></span>
+          <span id="conn-label">Connecting</span>
+        </button>
+        <button class="device-pill" id="device-pill" title="Active device">
+          <i data-icon="smartphone"></i>
+          <span id="device-label">Pixel 8 Pro</span>
+          <i data-icon="chevron-down" class="tiny"></i>
+        </button>
+        <div class="metric-pill" title="Battery / charging">
+          <i data-icon="battery-charging" id="battery-icon"></i>
+          <span id="battery-label">76%</span>
+        </div>
+        <div class="metric-pill signal" title="Signal">
+          <i data-icon="wifi"></i>
+          <span id="signal-label">LAN</span>
+        </div>
+      </div>
+
+      <div class="topbar-actions">
+        <button class="icon-btn" id="pair-open" aria-label="Pair a device" title="Pair a device"><i data-icon="qr-code"></i></button>
+        <button class="icon-btn" id="lock-btn" aria-label="Lock phone" title="Lock phone (Ctrl+Shift+L)"><i data-icon="lock"></i></button>
+        <button class="icon-btn" id="theme-toggle" aria-label="Toggle theme" title="Toggle dark / light theme"><i data-icon="moon"></i></button>
+        <button class="icon-btn" id="a11y-open" aria-label="Accessibility and display options" title="Accessibility"><i data-icon="accessibility"></i></button>
+        <button class="icon-btn notif-btn" id="notif-open" aria-label="Notifications" title="Notifications">
+          <i data-icon="bell"></i><span class="badge" id="notif-badge" hidden>0</span>
+        </button>
+        <button class="icon-btn" id="help-open" aria-label="Keyboard shortcuts" title="Keyboard shortcuts (?)"><i data-icon="keyboard"></i></button>
+        <button class="avatar" id="profile-btn" aria-label="Settings">SD</button>
+      </div>
+    </header>
+
+    <nav class="rail" id="rail" aria-label="Primary">
+      <button class="rail-btn is-active" data-view="desktop" title="Desktop (Alt+1)"><i data-icon="monitor"></i><span data-i18n="nav.desktop">Desktop</span></button>
+      <button class="rail-btn" data-view="apps" title="Apps (Alt+2)"><i data-icon="layout-grid"></i><span data-i18n="nav.apps">Apps</span></button>
+      <button class="rail-btn" data-view="phone" title="Phone (Alt+3)"><i data-icon="phone"></i><span data-i18n="nav.phone">Phone</span></button>
+      <button class="rail-btn" data-view="files" title="Files (Alt+4)"><i data-icon="folder"></i><span data-i18n="nav.files">Files</span></button>
+      <button class="rail-btn" data-view="clipboard" title="Clipboard (Alt+5)"><i data-icon="clipboard"></i><span data-i18n="nav.clipboard">Clipboard</span></button>
+      <button class="rail-btn" data-view="notifications" title="Notifications (Alt+6)">
+        <i data-icon="bell"></i><span data-i18n="nav.notifications">Alerts</span><span class="rail-dot" id="rail-notif-dot" hidden></span>
+      </button>
+      <button class="rail-btn" data-view="media" title="Media &amp; IO (Alt+7)"><i data-icon="cast"></i><span data-i18n="nav.media">Media</span></button>
+      <button class="rail-btn" data-view="gaming" title="Gaming (Alt+8)"><i data-icon="gamepad-2"></i><span data-i18n="nav.gaming">Gaming</span></button>
+      <div class="rail-spacer"></div>
+      <button class="rail-btn" data-view="developer" title="Developer (Alt+9)"><i data-icon="terminal"></i><span data-i18n="nav.developer">Developer</span></button>
+      <button class="rail-btn" data-view="settings" title="Settings (Alt+0)"><i data-icon="settings"></i><span data-i18n="nav.settings">Settings</span></button>
+      <div class="rail-mode" id="rail-mode" title="Demo mode — start the bridge for live control">
+        <span></span><span>Demo</span>
+      </div>
+    </nav>
+
+    <main class="workspace" id="view" tabindex="-1" aria-live="polite">
+      <!-- views rendered here -->
+    </main>
+
+    <footer class="statusbar" role="contentinfo">
+      <div class="status-left">
+        <span class="status-item"><i data-icon="server"></i><span id="status-mode">Demo mode</span></span>
+        <span class="status-item" id="status-endpoint" title="API endpoint">local</span>
+        <button class="status-item status-link" id="status-latency" title="Round-trip latency">— ms</button>
+        <span class="status-item" id="status-fps">60 fps</span>
+        <span class="status-item" id="status-bandwidth">16 Mbps</span>
+        <span class="status-item offline-badge" id="offline-badge" hidden><i data-icon="cloud-off"></i> LAN only</span>
+      </div>
+      <div class="status-right">
+        <span class="status-item" id="status-reconnect">Reconnect: healthy</span>
+        <span class="status-item" id="status-a11y" hidden>High contrast</span>
+        <span class="status-item status-clock" id="status-clock">—</span>
+        <span class="status-item build" id="status-build">v2.0.0</span>
+      </div>
+    </footer>
+  </div>
+
+  <div id="modal-root"></div>
+  <div id="toast-root" class="toast-root" aria-live="polite" aria-atomic="false"></div>
+  <div id="a11y-panel" class="a11y-panel" hidden></div>
+  <div id="palette-root"></div>
+
+  <noscript><p class="noscript">Android DEX console needs JavaScript. The bridge API at <code>/api</code> remains available.</p></noscript>
+</body>
+</html>

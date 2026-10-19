@@ -1,0 +1,51 @@
+{
+  "name": "Android DEX — Console",
+  "short_name": "DEX",
+  "description": "Mirror Android apps, sync clipboard and files, answer calls and messages, and manage game profiles from any browser.",
+  "id": "./",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone", "browser"],
+  "orientation": "any",
+  "background_color": "#08090b",
+  "theme_color": "#08090b",
+  "categories": ["productivity", "utilities"],
+  "lang": "en",
+  "dir": "auto",
+  "prefer_related_applications": false,
+  "icons": [
+    {
+      "src": "assets/app-icon.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/app-icon.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Desktop",
+      "short_name": "Desktop",
+      "url": "./#/desktop",
+      "icons": [{ "src": "assets/app-icon.png", "sizes": "1024x1024" }]
+    },
+    {
+      "name": "Messages",
+      "short_name": "Phone",
+      "url": "./#/phone",
+      "icons": [{ "src": "assets/app-icon.png", "sizes": "1024x1024" }]
+    },
+    {
+      "name": "Clipboard",
+      "short_name": "Clipboard",
+      "url": "./#/clipboard",
+      "icons": [{ "src": "assets/app-icon.png", "sizes": "1024x1024" }]
+    }
+  ]
+}

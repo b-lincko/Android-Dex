@@ -14,5 +14,20 @@ https://github.com/Genymobile/scrcpy
 The applicable Apache License, Version 2.0 is included with
 the distributed third-party components.
 
+Lucide icons
+Copyright (c) Lucide contributors
+Licensed under the ISC License.
+https://github.com/lucide-icons/lucide
+
+qrcode-generator
+Copyright (c) Kazuhiko Arase
+Licensed under the MIT License.
+https://github.com/kazuhikoarase/qrcode-generator
+
+Node.js (runtime dependency; bundled by the Flatpak and Snap builds)
+Copyright Node.js contributors
+Licensed under the MIT License.
+https://nodejs.org/
+
 The Android-Dex project is not affiliated with or endorsed by
-Genymobile.
+Genymobile, the Lucide project or the Node.js project.

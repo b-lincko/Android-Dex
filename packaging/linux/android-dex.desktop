@@ -1,0 +1,23 @@
+[Desktop Entry]
+Type=Application
+Version=1.5
+Name=Android DEX
+GenericName=Android desktop console
+Comment=Mirror Android apps, sync clipboard and files, answer calls and messages
+Exec=android-dex open
+TryExec=android-dex
+Icon=android-dex
+Terminal=false
+Categories=Utility;Development;
+Keywords=android;scrcpy;dex;mirror;adb;
+StartupNotify=true
+StartupWMClass=AndroidDEX
+Actions=Pair;Settings;
+
+[Desktop Action Pair]
+Name=Pair a device
+Exec=android-dex pair --open
+
+[Desktop Action Settings]
+Name=Settings
+Exec=android-dex open --view settings
