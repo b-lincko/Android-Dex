@@ -133,6 +133,14 @@ artefacts (SBOM, signed checksums, reproducible tarball) needed to ship it.
 - The Settings trust card called the SBOM “CycloneDX”; it is SPDX 2.3.
 - The landing page broke its navigation when the Lucide CDN was unavailable;
   icon initialisation is now optional and all copy/links point at v2.
+- The test suite required a global `WebSocket` (Node 21+), so the documented
+  Node 20.11 floor could not run it; the tests now use a small RFC 6455 client.
+- Windows never ran the suite: the shell-expanded glob was passed through
+  unexpanded by cmd.exe/PowerShell. `server/test/run.mjs` enumerates the files.
+- `verify-release.sh` reported a valid archive as broken (SIGPIPE under
+  `pipefail`) and did not fail when the checksum manifest lacked an entry.
+- Static app serving, the CLI self-restart path and the release scripts built
+  paths from `URL.pathname`, which is wrong on Windows (`/C:/…`).
 
 ## [1.0.0] — 2026-08-01
 
